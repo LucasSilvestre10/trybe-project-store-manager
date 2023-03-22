@@ -6,11 +6,16 @@ const getAllProducts = async (request, response) => {
 };
  
 const getProductId = async (request, response) => {
-  const result = await productsService.getProductIdService(request, response);
+  const result = await productsService.getProductIdService(request);
   if (result) {
     return response.status(200).json(result);
   }
   return response.status(404).json({ message: 'Product not found' });
- };
+};
+ 
+const postProducts = async (request, response) => { 
+  const result = await productsService.postProductsService(request);
+  return response.status(201).json(result);
+}; 
 
-module.exports = { getAllProducts, getProductId };
+module.exports = { getAllProducts, getProductId, postProducts };
