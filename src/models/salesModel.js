@@ -10,7 +10,7 @@ const postSalesModel = async (data) => {
       'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
       [saleId, saleProd.productId, saleProd.quantity],
     ));
-  Promise.all(teste);
+  await Promise.all(teste);
   const result = {
     id: saleId,
     itemsSold: data,
