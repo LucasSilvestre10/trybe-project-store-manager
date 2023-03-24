@@ -24,4 +24,17 @@ const postSales = async (request, response) => {
   return response.status(201).json(result);
 };
 
-module.exports = { postSales };
+const getSaleId = async (request, response) => {
+  const result = await salesServices.getSaleidService(request);
+  if (result === 'SALE_NOT_FOUND') {
+    return response.status(404).json({ message: 'Sale not found' });
+  }
+  return response.status(200).json(result);
+};
+
+const getAllSales = async (request, response) => {
+  const result = await salesServices.getAllSalesService();
+  return response.status(200).json(result);
+ };
+
+module.exports = { postSales, getSaleId, getAllSales };

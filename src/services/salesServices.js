@@ -20,4 +20,15 @@ const postSalesService = async (request) => {
   return result;
 };
 
-module.exports = { postSalesService };
+const getSaleidService = async (request) => { 
+  const { id } = request.params;
+  const result = await salesModel.getSaleIdModel(id);
+  return result;
+};
+
+const getAllSalesService = async () => { 
+  const result = await salesModel.getAllSalesmodel();
+  return result;
+};
+
+module.exports = { postSalesService, getSaleidService, getAllSalesService };
