@@ -31,4 +31,15 @@ const getAllSalesService = async () => {
   return result;
 };
 
-module.exports = { postSalesService, getSaleidService, getAllSalesService };
+const deleteSaleIdService = async (request) => {
+  const { id } = request.params;
+  const result = await salesModel.deleteSaleIdModel(id);
+  return result;
+ };
+
+module.exports = {
+  postSalesService,
+  getSaleidService,
+  getAllSalesService,
+  deleteSaleIdService,
+};

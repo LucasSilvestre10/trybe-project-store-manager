@@ -54,4 +54,30 @@ const getAllSalesmodel = async () => {
   return result;
 };
 
-module.exports = { postSalesModel, getSaleIdModel, getAllSalesmodel };
+const deleteSaleIdModel = async (id) => { 
+  const [productsSold] = await connection.execute(
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
+    [id],
+  );
+  
+  if (productsSold.affectedRows === 0) {
+    return 'SALE_NOT_FOUND';
+  }
+  const [sale] = await connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+  
+  if (sale.affectedRows === 0) {
+    return 'SALE_NOT_FOUND';
+  }
+
+  return 'sale delete';
+};
+
+module.exports = {
+  postSalesModel,
+  getSaleIdModel,
+  getAllSalesmodel,
+  deleteSaleIdModel,
+};
