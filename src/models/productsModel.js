@@ -36,4 +36,20 @@ const putProductsModel = async (id, name) => {
   return obj;
 };
 
-module.exports = { getAllProductsModel, getProductIdModel, postProductsModel, putProductsModel };
+const deleteProductsModel = async (id) => { 
+  const [result] = await connection.execute(
+   'DELETE FROM StoreManager.products WHERE id = ?', [Number(id)],
+  );
+  if (result.affectedRows === 0) {
+    return 'PRODUCT_NOT_FOUND';
+  }
+return result;
+};
+
+module.exports = {
+  getAllProductsModel,
+  getProductIdModel,
+  postProductsModel,
+  putProductsModel,
+  deleteProductsModel,
+};

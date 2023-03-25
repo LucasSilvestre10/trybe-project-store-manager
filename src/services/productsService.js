@@ -24,9 +24,16 @@ const putProductsService = async (request) => {
   return result;
 };
 
+const deleteProductsService = async (request) => { 
+  const { id } = request.params;
+  const result = await productsModel.deleteProductsModel(id);
+  return result;
+};
+
 module.exports = {
   getAllProductsService,
   getProductIdService,
   postProductsService,
   putProductsService,
+  deleteProductsService,
 }; 

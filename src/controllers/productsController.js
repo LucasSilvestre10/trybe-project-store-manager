@@ -24,6 +24,20 @@ const putProducts = async (request, response) => {
     return response.status(404).json({ message: 'Product not found' });
   } 
   return response.status(200).json(result);
+};
+ 
+const deleteProducts = async (request, response) => {
+  const result = await productsService.deleteProductsService(request);
+  if (result === 'PRODUCT_NOT_FOUND') {
+    return response.status(404).json({ message: 'Product not found' });
+  }
+  return response.status(204).json(result);
  };
 
-module.exports = { getAllProducts, getProductId, postProducts, putProducts };
+module.exports = {
+  getAllProducts,
+  getProductId,
+  postProducts,
+  putProducts,
+  deleteProducts,
+};
