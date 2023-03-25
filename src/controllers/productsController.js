@@ -18,4 +18,12 @@ const postProducts = async (request, response) => {
   return response.status(201).json(result);
 }; 
 
-module.exports = { getAllProducts, getProductId, postProducts };
+const putProducts = async (request, response) => {
+  const result = await productsService.putProductsService(request);
+  if (result === 'PRODUCT_NOT_FOUND') {
+    return response.status(404).json({ message: 'Product not found' });
+  } 
+  return response.status(200).json(result);
+ };
+
+module.exports = { getAllProducts, getProductId, postProducts, putProducts };

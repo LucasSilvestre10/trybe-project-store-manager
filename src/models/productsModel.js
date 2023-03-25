@@ -22,5 +22,18 @@ const postProductsModel = async (name) => {
   const result = await getProductIdModel(Number(insertId));
   return result;
 };
+const putProductsModel = async (id, name) => {
+   const [result] = await connection.execute(
+    'UPDATE StoreManager.products SET name = ? WHERE id = ?', [name, Number(id)],
+  );
+  if (result.affectedRows === 0) {
+    return 'PRODUCT_NOT_FOUND';
+  }
+  const obj = {
+    id: +id,
+    name,
+  };
+  return obj;
+};
 
-module.exports = { getAllProductsModel, getProductIdModel, postProductsModel };
+module.exports = { getAllProductsModel, getProductIdModel, postProductsModel, putProductsModel };

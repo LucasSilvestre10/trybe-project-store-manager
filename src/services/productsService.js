@@ -15,10 +15,18 @@ const postProductsService = async (request) => {
   const { name } = request.body;
   const result = await productsModel.postProductsModel(name);
   return result;
- };
+};
+ 
+const putProductsService = async (request) => { 
+  const { id } = request.params;
+  const { name } = request.body;
+  const result = await productsModel.putProductsModel(id, name);
+  return result;
+};
 
 module.exports = {
   getAllProductsService,
   getProductIdService,
   postProductsService,
+  putProductsService,
 }; 
