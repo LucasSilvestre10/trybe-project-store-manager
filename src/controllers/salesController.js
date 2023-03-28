@@ -36,6 +36,7 @@ const getAllSales = async (request, response) => {
   const result = await salesServices.getAllSalesService();
   return response.status(200).json(result);
 };
+
 const deleteSaleId = async (request, response) => { 
   const result = await salesServices.deleteSaleIdService(request);
   if (result === 'SALE_NOT_FOUND') {
