@@ -43,7 +43,7 @@ const deleteProductsModel = async (id) => {
   if (result.affectedRows === 0) {
     return 'PRODUCT_NOT_FOUND';
   }
-return result;
+return { message: 'PRODUCT_DELETED' };
 };
 
 module.exports = {

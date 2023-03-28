@@ -72,7 +72,7 @@ const deleteSaleIdModel = async (id) => {
     return 'SALE_NOT_FOUND';
   }
 
-  return 'sale delete';
+  return { message: 'SALE_DELETED' };
 };
 
 module.exports = {

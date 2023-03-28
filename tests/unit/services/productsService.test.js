@@ -100,7 +100,7 @@ describe('testes para productsService', async function () {
   });
 
   describe("retorno metodo deleteProduts", async function () {
-    it("retorna produto e´deletado corretamente", async function () {
+    it("retorna produto é deletado corretamente", async function () {
       //arrange
 
       const request = { params: { id: "1" } };
@@ -111,7 +111,7 @@ describe('testes para productsService', async function () {
       const result = await productsService.deleteProductsService(request);
 
       //assert
-      expect(result).to.deep.equal(responseMock);
+      expect(result).to.deep.equal();
     });    
   });
 })

@@ -4,14 +4,10 @@ const schema = require('./validations/validateDataSales');
 
 const postSalesService = async (request) => {
   const { body } = request;
-  const error = schema.dataSalesValidation(body);
-  // console.log(error);
+  const error = schema.dataSalesValidation(body);  
   if (error) return error;
   const teste = body.map((prod) => getProductIdModel(prod.productId));
-  const answer = await Promise.all(teste);
-  // const answer = await Promise.all(
-  //   body.map((prod) => getProductIdModel(prod.productId)),
-  // );
+  const answer = await Promise.all(teste); 
   const productsExist = answer.every((prod) => prod !== undefined);
   if (!productsExist) {
     return 'PRODUCT_NOT_FOUND';

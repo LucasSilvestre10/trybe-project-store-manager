@@ -31,6 +31,7 @@ const deleteProducts = async (request, response) => {
   if (result === 'PRODUCT_NOT_FOUND') {
     return response.status(404).json({ message: 'Product not found' });
   }
+  console.log(result);
   return response.status(204).json(result);
  };
 
