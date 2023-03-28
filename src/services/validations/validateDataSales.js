@@ -24,9 +24,9 @@ const dataSalesValidation = (data) => {
     if (error.message === '"quantity"') {
       return 'QUANTITY_IS_REQUIRED';
     }
-    if (error.message !== '') {
+  if (error.message === 'QUANTITY_INVALID') {
       return 'QUANTITY_INVALID';
     }  
   };
   
-module.exports = { dataSalesValidation };
+module.exports = { dataSalesValidation, checkData };

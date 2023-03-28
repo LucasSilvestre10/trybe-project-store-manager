@@ -1,5 +1,6 @@
 const salesService = require('../../../src/services/salesServices');
-const schema = require('../../../src/services/validations/validateDataSales')
+const validateDataSales = require('../../../src/services/validations/validateDataSales')
+const schema = require('../../../src/services/validations/schema')
 const salesModel = require('../../../src/models/salesModel');
 const dataMock = require("../../../__tests__/_dataMock");
 const productsModel = require('../../../src/models/productsModel');
@@ -80,13 +81,35 @@ describe('testes para salesService', async function () {
 
       const responseMock = dataMock.saleCreateResponse
       sinon.stub(salesModel, "postSalesModel").resolves(responseMock);
-      sinon.stub(schema, 'dataSalesValidation').returns()
+      // sinon.stub(validateDataSales, 'dataSalesValidation').returns(undefined)
+      // sinon.stub(schema, 'dataSalesSchema').returns(undefined)
 
       //act
       const result = await salesService.postSalesService(request)
 
       //assert      
       expect(result).to.deep.equal(responseMock);
+    })
+    it('se retorna erro em caso de produto não informado', async function () {
+      //arrange
+      const request = {
+        body:
+          [
+            { quantity: 1 },
+            { productId: 2, quantity: 3 },
+          ],
+
+      };
+      
+      // sinon.stub(schema, 'dataSalesSchema').returns('"productId"')
+      // sinon.stub(validateDataSales, 'checkData').returns('"productId"')
+      // sinon.stub(validateDataSales, 'dataSalesValidation').returns('PRODUCTID_IS_REQUIRED')
+
+      //act
+      const result = await salesService.postSalesService(request)
+
+      //assert      
+      expect(result).to.deep.equal('PRODUCTID_IS_REQUIRED');
     })
     it('se retorna erro em caso de produto não encontrado', async function () {
       //arrange
@@ -99,7 +122,8 @@ describe('testes para salesService', async function () {
 
       };      
       sinon.stub(salesModel, "postSalesModel").resolves('PRODUCT_NOT_FOUND');
-      sinon.stub(schema, 'dataSalesValidation').returns()
+      sinon.stub(validateDataSales, 'dataSalesValidation').returns(undefined)
+      sinon.stub(schema, 'dataSalesSchema').returns(undefined)
 
       //act
       const result = await salesService.postSalesService(request)
@@ -118,7 +142,8 @@ describe('testes para salesService', async function () {
 
       };
       sinon.stub(salesModel, "postSalesModel").resolves('QUANTITY_IS_REQUIRED');
-      sinon.stub(schema, 'dataSalesValidation').returns()
+      sinon.stub(schema, 'dataSalesSchema').returns('"quantity"')
+      
 
       //act
       const result = await salesService.postSalesService(request)
@@ -136,8 +161,9 @@ describe('testes para salesService', async function () {
           ],
 
       };
-      sinon.stub(salesModel, "postSalesModel").resolves('QUANTITY_INVALID');
-      sinon.stub(schema, 'dataSalesValidation').returns()
+      // sinon.stub(salesModel, "postSalesModel").resolves('QUANTITY_INVALID');
+      // sinon.stub(schema, 'dataSalesSchema').returns('teste')
+      // sinon.stub(validateDataSales, 'dataSalesValidation').returns('QUANTITY_INVALID')
 
       //act
       const result = await salesService.postSalesService(request)
@@ -145,6 +171,7 @@ describe('testes para salesService', async function () {
       //assert      
       expect(result).to.deep.equal('QUANTITY_INVALID');
     })
+    
   })
   
 
