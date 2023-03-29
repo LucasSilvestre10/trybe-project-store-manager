@@ -38,9 +38,9 @@ const getSaleIdModel = async (id) => {
   }
   return result;
 };
- 
-const getAllSalesmodel = async () => { 
-   const [result] = await connection.execute(
+
+const getAllSalesmodel = async () => {
+  const [result] = await connection.execute(
     `SELECT
       s.id AS saleId,
       DATE_FORMAT(s.date, '%Y-%m-%dT%H:%i:%s.000Z') AS date,
@@ -50,27 +50,23 @@ const getAllSalesmodel = async () => {
       StoreManager.sales s
       JOIN StoreManager.sales_products sp ON s.id = sp.sale_id
     ORDER BY saleId ASC, productId ASC`,
-   );
+  );
   return result;
 };
 
-const deleteSaleIdModel = async (id) => { 
+const deleteSaleIdModel = async (id) => {
   const [productsSold] = await connection.execute(
     'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
     [id],
   );
-  
+
   if (productsSold.affectedRows === 0) {
     return 'SALE_NOT_FOUND';
   }
-  const [sale] = await connection.execute(
+  await connection.execute(
     'DELETE FROM StoreManager.sales WHERE id = ?',
     [id],
   );
-  
-  if (sale.affectedRows === 0) {
-    return 'SALE_NOT_FOUND';
-  }
 
   return { message: 'SALE_DELETED' };
 };
