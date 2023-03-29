@@ -167,8 +167,6 @@ describe('testes para salesService', async function () {
     })
     
   })
-  
-
 
   describe('testando getSaleidService', async function () {
     it('se retorna a venda de forma correta', async function () {
@@ -297,5 +295,7 @@ describe('testes para salesService', async function () {
       expect(result).to.deep.equal(responseMock);
     })
   })
+
+  
 
 })

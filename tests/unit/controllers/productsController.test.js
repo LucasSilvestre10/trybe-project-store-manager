@@ -34,8 +34,7 @@ describe('testes para productsController', async function () {
         body: {
           requestMock,
         },
-      };
-     
+      };     
       
       sinon.stub(productsService, "postProductsService").resolves(responseMock);
 
@@ -152,7 +151,7 @@ describe('testes para productsController', async function () {
   });
 
   describe("retorno metodo deleteProduts", async function () {
-    it("retorna produto e´deletado corretamente", async function () {
+    it("retorna produto é deletado corretamente", async function () {
       //arrange
 
       const request = { params: { id: "1" } };
@@ -186,4 +185,27 @@ describe('testes para productsController', async function () {
       expect(response.json).to.have.been.calledWith(responseMock);
     });
   });
+
+  describe('retorno do metodo getByNameProducts', async function () {
+    it('se retorna a busca corretamente', async function () {
+     
+        //arrange
+
+        const responseMock = dataMock.allProductsResponse;
+        
+
+        sinon.stub(productsService, 'getByNameProductsService').resolves(responseMock)
+
+        //act
+        await productsControler.getByNameProducts(null, response)
+
+
+        //assert
+        expect(response.status).to.have.been.calledWith(200);
+        expect(response.json).to.have.been.calledWith(responseMock);
+      
+    })
+  })
+
+  
 })

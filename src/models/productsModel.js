@@ -12,6 +12,13 @@ const getProductIdModel = async (id) => {
   );
   return result;
 };
+const getByNameProductsModel = async (q) => { 
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.products WHERE name LIKE ?',
+    [`%${q}%`],
+  );
+  return result;
+}; 
 
 const postProductsModel = async (name) => {
   const [{ insertId }] = await connection.execute(
@@ -52,4 +59,5 @@ module.exports = {
   postProductsModel,
   putProductsModel,
   deleteProductsModel,
+  getByNameProductsModel,
 };

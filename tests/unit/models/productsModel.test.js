@@ -29,96 +29,109 @@ describe('testes para productsModel', async function () {
       //assert
 
       expect(result).to.deep.equal(responseMock);
+    })    
+  })  
+  describe('testes para getProductIdModel', async function () {
+    it('testa se traz o produto corretamente', async function () {
+      //arrange
+      const responseMock = dataMock.rightProductBody;
+      const request = 1
+      sinon.stub(connection, "execute").resolves([[responseMock]]);
+
+      //act
+      const result = await productsModel.getProductIdModel(request)
+
+      //assert
+
+      expect(result).to.deep.equal(responseMock);
     })
-    describe('testes para getProductIdModel', async function () {
-      it('testa se traz o produto corretamente', async function () {
-        //arrange
-        const responseMock = dataMock.rightProductBody;
-        const request = 1
-        sinon.stub(connection, "execute").resolves([[responseMock]]);
+  })
+  describe('testes para postProductsModel', async function () {
+    it('testa se cadastra produtos corretamente', async function () {
+      //arrange
+      const request = dataMock.rightProductBody.name;
+      const responseMock = dataMock.productCreateResponse;
+      sinon.stub(connection, "execute").resolves([[responseMock]]);
 
-        //act
-        const result = await productsModel.getProductIdModel(request)
+      //act
+      const result = await productsModel.postProductsModel(request)
 
-        //assert
+      //assert
 
-        expect(result).to.deep.equal(responseMock);
-      })
+      expect(result).to.deep.equal(responseMock);
     })
-    describe('testes para postProductsModel', async function () {
-      it('testa se cadastra produtos corretamente', async function () {
-        //arrange
-        const request = dataMock.rightProductBody.name;
-        const responseMock = dataMock.productCreateResponse;
-        sinon.stub(connection, "execute").resolves([[responseMock]]);
+  })
+  describe('testes para putProductsModel', async function () {
+    it('testa se atualiza produtos corretamente', async function () {
+      //arrange
+      const requestId = 4
+      const requestBody = dataMock.productCreateResponse.name;
+      const responseMock = dataMock.productCreateResponse;
+      sinon.stub(connection, "execute").resolves([[responseMock]]);
 
-        //act
-        const result = await productsModel.postProductsModel(request)
+      //act
+      const result = await productsModel.putProductsModel(requestId, requestBody)
 
-        //assert
+      //assert
 
-        expect(result).to.deep.equal(responseMock);
-      })
+      expect(result).to.deep.equal(responseMock);
     })
-    describe('testes para putProductsModel', async function () {
-      it('testa se atualiza produtos corretamente', async function () {
-        //arrange
-        const requestId = 4
-        const requestBody = dataMock.productCreateResponse.name;
-        const responseMock = dataMock.productCreateResponse;
-        sinon.stub(connection, "execute").resolves([[responseMock]]);
+    it('testa se retorna erro em caso de produto não encontrado', async function () {
+      //arrange
+      const requestId = 99
+      const requestBody = dataMock.productCreateResponse.name;
+      const responseMock = { affectedRows: 0 };
+      sinon.stub(connection, "execute").resolves([responseMock]);
 
-        //act
-        const result = await productsModel.putProductsModel(requestId, requestBody)
+      //act
+      const result = await productsModel.putProductsModel(requestId, requestBody)
 
-        //assert
+      //assert
 
-        expect(result).to.deep.equal(responseMock);
-      })
-      it('testa se retorna erro em caso de produto não encontrado', async function () {
-        //arrange
-        const requestId = 99
-        const requestBody = dataMock.productCreateResponse.name;
-        const responseMock = { affectedRows: 0};
-        sinon.stub(connection, "execute").resolves([responseMock]);
-
-        //act
-        const result = await productsModel.putProductsModel(requestId, requestBody)
-
-        //assert
-
-        expect(result).to.deep.equal("PRODUCT_NOT_FOUND");
-      })
+      expect(result).to.deep.equal("PRODUCT_NOT_FOUND");
     })
-    describe('testes para deleteProductsModel', async function () {
-      it('testa se deleta produtos corretamente', async function () {
-        //arrange
-        const requestId = 4        
-        const responseMock = { message: 'PRODUCT_DELETED' };
-        sinon.stub(connection, "execute").resolves([[responseMock]]);
+  })
+  describe('testes para deleteProductsModel', async function () {
+    it('testa se deleta produtos corretamente', async function () {
+      //arrange
+      const requestId = 4
+      const responseMock = { message: 'PRODUCT_DELETED' };
+      sinon.stub(connection, "execute").resolves([[responseMock]]);
 
-        //act
-        const result = await productsModel.deleteProductsModel(requestId)
+      //act
+      const result = await productsModel.deleteProductsModel(requestId)
 
-        //assert
+      //assert
 
-        expect(result).to.deep.equal(responseMock);
-      })
-      it('testa se retorna erro em caso de produto não encontrado', async function () {
-        //arrange
-        const requestId = 99
-       
-        const responseMock = { affectedRows: 0 };
-        sinon.stub(connection, "execute").resolves([responseMock]);
-
-        //act
-        const result = await productsModel.deleteProductsModel(requestId)
-
-        //assert
-
-        expect(result).to.deep.equal("PRODUCT_NOT_FOUND");
-      })
+      expect(result).to.deep.equal(responseMock);
     })
-    
-  })   
+    it('testa se retorna erro em caso de produto não encontrado', async function () {
+      //arrange
+      const requestId = 99
+
+      const responseMock = { affectedRows: 0 };
+      sinon.stub(connection, "execute").resolves([responseMock]);
+
+      //act
+      const result = await productsModel.deleteProductsModel(requestId)
+
+      //assert
+
+      expect(result).to.deep.equal("PRODUCT_NOT_FOUND");
+    })
+  })
+  describe('testes para getByNameProductsModel', async function () {
+    it('testa se traz todos os produtos corretamente', async function () {
+      //arrange
+      const responseMock = dataMock.allProductsResponse;
+      sinon.stub(connection, "execute").resolves([responseMock]);
+
+      //act
+      const result = await productsModel.getByNameProductsModel()
+
+      //assert
+
+      expect(result).to.deep.equal(responseMock);
+    }) 
+  })
 })

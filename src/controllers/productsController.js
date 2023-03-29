@@ -12,6 +12,12 @@ const getProductId = async (request, response) => {
   }
   return response.status(404).json({ message: 'Product not found' });
 };
+
+const getByNameProducts = async (request, response) => {
+  const result = await productsService.getByNameProductsService(request);
+  
+  return response.status(200).json(result);
+};
  
 const postProducts = async (request, response) => { 
   const result = await productsService.postProductsService(request);
@@ -40,4 +46,5 @@ module.exports = {
   postProducts,
   putProducts,
   deleteProducts,
+  getByNameProducts,
 };

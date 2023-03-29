@@ -10,6 +10,11 @@ const getProductIdService = async (request) => {
   const result = await productsModel.getProductIdModel(id);
   return result;
 };
+const getByNameProductsService = async (request) => {
+  const { q } = request.query;
+  const result = await productsModel.getByNameProductsModel(q);
+  return result;
+ };
  
 const postProductsService = async (request) => { 
   const { name } = request.body;
@@ -36,4 +41,5 @@ module.exports = {
   postProductsService,
   putProductsService,
   deleteProductsService,
+  getByNameProductsService,
 }; 

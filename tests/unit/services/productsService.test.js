@@ -114,4 +114,23 @@ describe('testes para productsService', async function () {
       expect(result).to.deep.equal();
     });    
   });
+
+  describe('retorno getAllProductsModel', async function () {
+    it('retorna lista de produtos corretamente', async function () {
+      //arrange
+
+      const responseMock = dataMock.allProductsResponse
+      const request = { query: {id: 1} }
+
+      sinon.stub(productsModel, 'getByNameProductsModel').resolves(responseMock)
+
+      //act
+      const result = await productsService.getByNameProductsService(request)
+
+
+      //assert
+      expect(result).to.deep.equal(responseMock);
+    })
+  })
+  
 })
