@@ -144,6 +144,49 @@ describe('testes para salesModel', async function () {
     })
   })
 
+  describe('testes para putSalesIdModel', async function () {
+    it('se realiza uma atualização com sucesso', async function () {
+      //arrange
+      const responseMock = {
+        "saleId": 1,
+        "itemsUpdated": [
+          {
+            "productId": 1,
+            "quantity": 1
+          },
+          {
+            "productId": 2,
+            "quantity": 5
+          }
+        ]
+      };
+      const body = dataMock.rightSaleBody
+      const id = 1
+      sinon.stub(connection, "execute").resolves([responseMock])
+
+      //act
+      const result = await salesModel.putSaleIdModel(id, body)
+
+      //assert
+
+      expect(result).to.deep.equal(responseMock);
+    }) 
+    it('se retorna erro em caso de venda não encontrada', async function () {
+      //arrange
+      const responseMock = { affectedRows: 0 };
+      const body = dataMock.rightSaleBody
+      const id = 99
+      sinon.stub(connection, "execute").resolves([responseMock])
+
+      //act
+      const result = await salesModel.putSaleIdModel(id, body)
+
+      //assert
+
+      expect(result).to.deep.equal({ error: 'SALE_NOT_FOUND' });
+    }) 
+  })
+
   
 
   

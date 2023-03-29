@@ -10,9 +10,23 @@ const postSalesService = async (request) => {
   const answer = await Promise.all(teste); 
   const productsExist = answer.every((prod) => prod !== undefined);
   if (!productsExist) {
-    return 'PRODUCT_NOT_FOUND';
+    return { error: 'PRODUCT_NOT_FOUND' };
   }
   const result = await salesModel.postSalesModel(body);
+  return result;
+};
+const putSaleIdService = async (request) => {
+  const { body } = request;
+  const { id } = request.params;
+  const error = schema.dataSalesValidation(body);
+  if (error) return error;
+  const teste = body.map((prod) => getProductIdModel(prod.productId));
+  const answer = await Promise.all(teste);
+  const productsExist = answer.every((prod) => prod !== undefined);
+  if (!productsExist) {
+    return { error: 'PRODUCT_NOT_FOUND' };
+  }
+  const result = await salesModel.putSaleIdModel(Number(id), body);
   return result;
 };
 
@@ -31,11 +45,12 @@ const deleteSaleIdService = async (request) => {
   const { id } = request.params;
   const result = await salesModel.deleteSaleIdModel(id);
   return result;
- };
+};
 
 module.exports = {
   postSalesService,
   getSaleidService,
   getAllSalesService,
   deleteSaleIdService,
+  putSaleIdService,
 };

@@ -17,14 +17,14 @@ const checkData = (data) => {
 
 const dataSalesValidation = (data) => {
   const error = checkData(data);
-    if (!error) return;
-    if (error.message === '"productId"') {
-      return 'PRODUCTID_IS_REQUIRED';
-    }
-    if (error.message === '"quantity"') {
-      return 'QUANTITY_IS_REQUIRED';
-    }
-  return 'QUANTITY_INVALID';  
-  };
+  if (!error) return;
+  if (error.message === '"productId"') {
+    return { error: 'PRODUCTID_IS_REQUIRED' };
+  }
+  if (error.message === '"quantity"') {
+    return { error: 'QUANTITY_IS_REQUIRED' };
+  }
+  return { error: 'QUANTITY_INVALID' };
+};
   
 module.exports = { dataSalesValidation, checkData };

@@ -54,7 +54,7 @@ describe("testes para salesControllers", async function () {
 
       sinon
         .stub(salesService, "postSalesService")
-        .resolves("PRODUCT_NOT_FOUND");
+        .resolves({error: "PRODUCT_NOT_FOUND"});
 
       //act
       await salesController.postSales(request, response);
@@ -62,7 +62,7 @@ describe("testes para salesControllers", async function () {
       //asserts
       expect(response.status).to.have.been.calledWith(404);
       expect(response.json).to.have.been.calledWith(responseMock);
-    });
+    })
     it("testa retorno de erro caso não houver um id de produto", async function () {
       //arrange
       const requestMock = dataMock.nonexistentProductIdBody;
@@ -75,7 +75,7 @@ describe("testes para salesControllers", async function () {
 
       sinon
         .stub(salesService, "postSalesService")
-        .resolves("PRODUCTID_IS_REQUIRED");
+        .resolves({error: "PRODUCTID_IS_REQUIRED"});
 
       //act
       await salesController.postSales(request, response);
@@ -96,7 +96,7 @@ describe("testes para salesControllers", async function () {
 
       sinon
         .stub(salesService, "postSalesService")
-        .resolves("QUANTITY_IS_REQUIRED");
+        .resolves({error: "QUANTITY_IS_REQUIRED"});
 
       //act
       await salesController.postSales(request, response);
@@ -117,7 +117,7 @@ describe("testes para salesControllers", async function () {
         },
       };
 
-      sinon.stub(salesService, "postSalesService").resolves("QUANTITY_INVALID");
+      sinon.stub(salesService, "postSalesService").resolves({error: "QUANTITY_INVALID"});
 
       //act
       await salesController.postSales(request, response);
@@ -284,5 +284,58 @@ describe("testes para salesControllers", async function () {
       expect(response.status).to.have.been.calledWith(404);
       expect(response.json).to.have.been.calledWith(responseMock);
     });
+  })
+
+  describe('testes para putSaleId', async function () {
+    it('se retorna a edição da venda corretamente', async function () {
+      const requestMock = dataMock.rightSaleBody;
+      const responseMock = {
+        "saleId": 1,
+        "itemsUpdated": [
+          {
+            "productId": 1,
+            "quantity": 123
+          },
+          {
+            "productId": 2,
+            "quantity": 321
+          }
+        ]
+      }
+      const request = {
+        params: {id: 1},
+        body: {
+          requestMock,
+        },
+      };
+
+      sinon.stub(salesService, "putSaleIdService").resolves(responseMock);
+
+      //act
+      await salesController.putSaleId(request, response);
+
+      //asserts
+      expect(response.status).to.have.been.calledWith(200);
+      expect(response.json).to.have.been.calledWith(responseMock);
+    })
+    it('se retorna erro em caso de venda não encontrada', async function () {
+      const requestMock = dataMock.rightSaleBody;
+      const responseMock = { message: 'Sale not found' };
+      const request = {
+        params: { id: 1 },
+        body: {
+          requestMock,
+        },
+      };
+
+      sinon.stub(salesService, "putSaleIdService").resolves({ error: 'SALE_NOT_FOUND' });
+
+      //act
+      await salesController.putSaleId(request, response);
+
+      //asserts
+      expect(response.status).to.have.been.calledWith(404);
+      expect(response.json).to.have.been.calledWith(responseMock);
+    })
   })
 });

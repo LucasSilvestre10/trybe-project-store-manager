@@ -19,6 +19,26 @@ const postSalesModel = async (data) => {
   return result;
 };
 
+const putSaleIdModel = async (id, body) => { 
+   const response = body.map((saleProd) =>
+    connection.execute(`
+    UPDATE StoreManager.sales_products
+    SET quantity = ?
+    WHERE sale_id = ? AND product_id = ?;
+  `, [saleProd.quantity, id, saleProd.productId]));
+    
+  const [[editedSales]] = await Promise.all(response);
+ 
+  if (editedSales.affectedRows === 0) {
+    return { error: 'SALE_NOT_FOUND' };
+  }
+  const result = {
+    saleId: id,
+    itemsUpdated: body,
+  };
+  return result;
+};
+
 const getSaleIdModel = async (id) => {
   const [result] = await connection.execute(
     `
@@ -76,4 +96,5 @@ module.exports = {
   getSaleIdModel,
   getAllSalesmodel,
   deleteSaleIdModel,
+  putSaleIdModel,
 };

@@ -81,8 +81,7 @@ describe('testes para salesService', async function () {
 
       const responseMock = dataMock.saleCreateResponse
       sinon.stub(salesModel, "postSalesModel").resolves(responseMock);
-      // sinon.stub(validateDataSales, 'dataSalesValidation').returns(undefined)
-      // sinon.stub(schema, 'dataSalesSchema').returns(undefined)
+      
 
       //act
       const result = await salesService.postSalesService(request)
@@ -101,15 +100,13 @@ describe('testes para salesService', async function () {
 
       };
       
-      // sinon.stub(schema, 'dataSalesSchema').returns('"productId"')
-      // sinon.stub(validateDataSales, 'checkData').returns('"productId"')
-      // sinon.stub(validateDataSales, 'dataSalesValidation').returns('PRODUCTID_IS_REQUIRED')
+     
 
       //act
       const result = await salesService.postSalesService(request)
 
       //assert      
-      expect(result).to.deep.equal('PRODUCTID_IS_REQUIRED');
+      expect(result).to.deep.equal({ error: 'PRODUCTID_IS_REQUIRED' });
     })
     it('se retorna erro em caso de produto não encontrado', async function () {
       //arrange
@@ -129,7 +126,7 @@ describe('testes para salesService', async function () {
       const result = await salesService.postSalesService(request)
 
       //assert      
-      expect(result).to.deep.equal('PRODUCT_NOT_FOUND');
+      expect(result).to.deep.equal({ error: 'PRODUCT_NOT_FOUND' });
     })
     it('se retorna erro em caso de quantidade não informada', async function () {
       //arrange
@@ -149,7 +146,7 @@ describe('testes para salesService', async function () {
       const result = await salesService.postSalesService(request)
 
       //assert      
-      expect(result).to.deep.equal('QUANTITY_IS_REQUIRED');
+      expect(result).to.deep.equal({ error: 'QUANTITY_IS_REQUIRED' });
     })
     it('se retorna erro em caso de quantidade invalida', async function () {
       //arrange
@@ -161,15 +158,12 @@ describe('testes para salesService', async function () {
           ],
 
       };
-      // sinon.stub(salesModel, "postSalesModel").resolves('QUANTITY_INVALID');
-      // sinon.stub(schema, 'dataSalesSchema').returns('teste')
-      // sinon.stub(validateDataSales, 'dataSalesValidation').returns('QUANTITY_INVALID')
-
+      
       //act
       const result = await salesService.postSalesService(request)
 
       //assert      
-      expect(result).to.deep.equal('QUANTITY_INVALID');
+      expect(result).to.deep.equal({ error: 'QUANTITY_INVALID' });
     })
     
   })
@@ -225,5 +219,83 @@ describe('testes para salesService', async function () {
     })
   })
 
+  describe('testando putSalesIdService', async function () {
+    it('se realiza vendas com sucesso', async function () {
+      //arrange
+
+      const requestMock = dataMock.rightSaleBody
+      const request = {
+        params: {id: 1},
+        body:
+          requestMock,
+      };
+
+      const responseMock = {
+        "saleId": 1,
+        "itemsUpdated": [
+          {
+            "productId": 1,
+            "quantity": 1
+          },
+          {
+            "productId": 2,
+            "quantity": 5
+          }
+        ]
+      }
+      sinon.stub(salesModel, "postSalesModel").resolves(responseMock);
+
+
+      //act
+      const result = await salesService.putSaleIdService(request)
+
+      //assert      
+      expect(result).to.deep.equal(responseMock);
+    })
+    it('se erro em caso de produto não encontrado', async function () {
+      //arrange
+
+      const requestMock = [
+        { productId: 99, quantity: 1 },
+        { productId: 2, quantity: 5 },
+      ]
+      const request = {
+        params: { id: 1 },
+        body:
+          requestMock,
+      };
+
+      const responseMock = {
+        error: 'PRODUCT_NOT_FOUND'
+      }
+      sinon.stub(salesModel, "postSalesModel").resolves(responseMock);
+       //act
+      const result = await salesService.putSaleIdService(request)
+
+      //assert      
+      expect(result).to.deep.equal(responseMock);
+    })
+    it('se erro em caso de id de produto não informado', async function () {
+      //arrange
+
+      const requestMock = [
+        { quantity: 1 },
+        { productId: 2, quantity: 5 },
+      ]
+      const request = {
+        params: { id: 1 },
+        body:
+          requestMock,
+      };
+
+      const responseMock = { error: 'PRODUCTID_IS_REQUIRED' }
+      sinon.stub(salesModel, "postSalesModel").resolves(responseMock);
+      //act
+      const result = await salesService.putSaleIdService(request)
+
+      //assert      
+      expect(result).to.deep.equal(responseMock);
+    })
+  })
 
 })
